@@ -1,4 +1,4 @@
 twitprof
 ========
 
-Show Twitter Profile
+Twitter Profile Widget
