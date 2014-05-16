@@ -8,23 +8,6 @@ default_expiration: "30d"
 
 handlers:
 
-# index files
-- url: /(.+)/
-  static_files: static/\1/index.html
-  upload: static/(.+)/index.html
-  expiration: "10m"
-
-- url: /(.+)
-  static_files: static/\1/index.html
-  upload: static/(.+)/index.html
-  expiration: "10m"
-
-# site root
-- url: /
-  static_files: static/index.html
-  upload: static/index.html
-  expiration: "10m"
-
 # text files
 - url: /(.*\.txt)
   mime_type: text/plain
@@ -99,6 +82,23 @@ handlers:
   mime_type: images/svg+xml
   static_files: static/\1
   upload: static/(.*\.(svg|svgz))
+
+
+# index files
+- url: /(.+)/
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+  expiration: "10m"
+
+- url: /(.+)
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+  expiration: "10m"
+
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+  expiration: "10m"
 
 # 404 error
 - url: /.*
