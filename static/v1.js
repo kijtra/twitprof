@@ -236,7 +236,7 @@
                 for (; i < l; i++) {
                     current = elements[i];
                     path = current.src;
-                    if (path.indexOf(currentFile) != -1) {
+                    if (path.indexOf(currentFile) != -1 || path.indexOf(currentFile.replace('.js', '.min.js')) != -1) {
                         path = path.replace(/\.js$/, '.css');
                         css = d.createElement("link");
                         css.setAttribute("rel", "stylesheet");
