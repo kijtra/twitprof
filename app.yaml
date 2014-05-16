@@ -4,15 +4,103 @@ runtime: php
 api_version: 1
 threadsafe: true
 
+default_expiration: "30d"
+
 handlers:
+
+# index files
+- url: /(.+)/
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+  expiration: "10m"
+
+- url: /(.+)
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+  expiration: "10m"
+
+# site root
 - url: /
   static_files: static/index.html
   upload: static/index.html
+  expiration: "10m"
 
-- url: /(.*\.(html|gif|png|jpg|ico|bmp|css|js|otf|eot|svg|ttf|woff))
+# text files
+- url: /(.*\.txt)
+  mime_type: text/plain
   static_files: static/\1
-  upload: static/(.*\.(html|gif|png|jpg|ico|bmp|css|js|otf|eot|svg|ttf|woff))
+  upload: static/(.*\.txt)
 
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
+  expiration: "1h"
+
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: static/\1
+  upload: static/(.*\.css)
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: static/\1
+  upload: static/(.*\.js)
+
+- url: /(.*\.json)
+  mime_type: application/json
+  static_files: static/\1
+  upload: static/(.*\.json)
+  expiration: "1h"
+
+- url: /(.*\.xml)
+  mime_type: application/xml
+  static_files: static/\1
+  upload: static/(.*\.xml)
+  expiration: "1h"
+
+# image files
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  static_files: static/\1
+  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+
+- url: /(.*\.ico)
+  mime_type: image/x-icon
+  static_files: static/\1
+  upload: static/(.*\.ico)
+
+# compressed files
+- url: /(.*\.(bz2|gz|rar|tar|tgz|zip))
+  static_files: static/\1
+  upload: static/(.*\.(bz2|gz|rar|tar|tgz|zip))
+
+# webfont files
+- url: /(.*\.eot)
+  mime_type: application/vnd.ms-fontobject
+  static_files: static/\1
+  upload: static/(.*\.eot)
+
+- url: /(.*\.otf)
+  mime_type: font/opentype
+  static_files: static/\1
+  upload: static/(.*\.otf)
+
+- url: /(.*\.ttf)
+  mime_type: font/truetype
+  static_files: static/\1
+  upload: static/(.*\.ttf)
+
+- url: /(.*\.woff)
+  mime_type: application/x-font-woff
+  static_files: static/\1
+  upload: static/(.*\.woff)
+
+- url: /(.*\.(svg|svgz))
+  mime_type: images/svg+xml
+  static_files: static/\1
+  upload: static/(.*\.(svg|svgz))
+
+# 404 error
 - url: /.*
   static_files: static/404.html
   upload: static/404.html
