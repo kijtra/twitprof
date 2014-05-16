@@ -2,10 +2,79 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Example</title>
+    <title>TwitProf</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://google-code-prettify.googlecode.com/svn/loader/skins/sunburst.css" rel="stylesheet">
+    <style>
+    body pre.prettyprint {
+        width:auto;
+        margin:0;
+        padding:15px;
+        border:0;
+        border-radius:3px;
+    }
+
+    body pre.prettyprint b, body pre.prettyprint b * {
+        color:#E04A3F !important;
+    }
+    </style>
 </head>
 <body>
-    <div class="twitprof" data-screen="kijtra"></div>
-    <script src="//kijtra-twitprof.appspot.com/v1.min.js"></script>
+    <div class="container">
+        <h1 class="page-header">TwitProf</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>デフォルト</h3>
+                <pre class="prettyprint lang-html">&lt;div class="twitprof" data-screen="kijtra"&gt;&lt;/div&gt;
+&lt;script src="//kijtra-twitprof.appspot.com/v1.min.js"&gt;&lt;/script&gt;</pre>
+                <p class="text-center text-muted"><br><i class="fa fa-chevron-down fa-5x"></i><br><br></p>
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="twitprof" data-screen="kijtra"></div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <h3>ダークテーマ</h3>
+                <pre class="prettyprint lang-html">&lt;div class="twitprof <b>dark</b>" data-screen="kijtra"&gt;&lt;/div&gt;
+&lt;script src="//kijtra-twitprof.appspot.com/v1.min.js"&gt;&lt;/script&gt;</pre>
+                <p class="text-center text-muted"><br><i class="fa fa-chevron-down fa-5x"></i><br><br></p>
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="twitprof dark" data-screen="kijtra"></div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>枠なし</h3>
+                <pre class="prettyprint lang-html">&lt;div class="twitprof <b>naked</b>" data-screen="kijtra"&gt;&lt;/div&gt;
+&lt;script src="//kijtra-twitprof.appspot.com/v1.min.js"&gt;&lt;/script&gt;</pre>
+                <p class="text-center text-muted"><br><i class="fa fa-chevron-down fa-5x"></i><br><br></p>
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="twitprof naked" data-screen="kijtra"></div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <h3>ちいさめ</h3>
+                <pre class="prettyprint lang-html">&lt;div class="twitprof <b>mini</b>" data-screen="kijtra"&gt;&lt;/div&gt;
+&lt;script src="//kijtra-twitprof.appspot.com/v1.min.js"&gt;&lt;/script&gt;</pre>
+                <p class="text-center text-muted"><br><i class="fa fa-chevron-down fa-5x"></i><br><br></p>
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="twitprof mini" data-screen="kijtra"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <script src="v1.min.js"></script>
 </body>
 </html>

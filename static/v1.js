@@ -1,18 +1,18 @@
 ;(function(w){
     "use strict";
 
-    var globalFunc = 'twitprof',
-    globalClass = 'twitprof',
-    currentFile = 'twitprof/v1.js';
+    var globalName = 'twitprof',
+    version = 'v1';
     
-    if (w[globalFunc]) {
+    if (w[globalName]) {
         return false;
     }
 
-    w[globalFunc] = {};
+    w[globalName] = new Object();
 
     var init = function(){
         var css,
+        stack = new Object(),
 
         getClassElements = (function(d){
             if ('function' === typeof d.querySelectorAll) {
@@ -100,12 +100,23 @@
         },
 
         getData = function(screenName, funcName){
-            var url = 'https://query.yahooapis.com/v1/public/yql?q=SELECT%20html%20FROM%20json%20WHERE%20url%20%3D%20%22https%3A%2F%2Ftwitter.com%2Fi%2Fprofiles%2Fpopup%3Fscreen_name%3D'+screenName+'%22&format=json&_maxage=3600&callback='+globalFunc+'.'+funcName;
-            var s = document.createElement('script');
-            s.src = url;
-            s.async = "async";
-            s.defer = "defer";
-            document.body.appendChild(s);
+            if (!stack[screenName]) {
+                var url = 'https://query.yahooapis.com/v1/public/yql?q=SELECT%20html%20FROM%20json%20WHERE%20url%20%3D%20%22https%3A%2F%2Ftwitter.com%2Fi%2Fprofiles%2Fpopup%3Fscreen_name%3D'+screenName+'%22&format=json&_maxage=3600&callback='+globalName+'.'+funcName;
+                var s = document.createElement('script');
+                s.src = url;
+                s.async = "async";
+                s.defer = "defer";
+                document.body.appendChild(s);
+                s.onload = s.onreadystatechange = function(){
+                    s.onreadystatechange = s.onload = null;
+                    document.body.removeChild(s);
+                };
+            }
+
+            if (!stack[screenName]) {
+                stack[screenName] = new Object();
+            }
+            stack[screenName][funcName] = true;
         },
 
         parseData = function(src) {
@@ -163,7 +174,7 @@
 
         showProf = function(target, data){
             var html = '';
-            html+='<div class="-'+globalClass+'"><div class="-wrap">';
+            html+='<div class="-'+globalName+'"><div class="-wrap">';
 
             html+='<div class="-head">';
             html+='<div class="-avatar"><a href="'+data.link+'" target="_blank"><img src="'+data.avatar.normal+'" data-src-2x="'+data.avatar.bigger+'" alt="'+data.name+'"></a></div>';
@@ -209,23 +220,30 @@
             target.innerHTML = html;
         };
 
-        var elements = getClassElements(globalClass, function(i, element, last){
+        var elements = getClassElements(globalName, function(i, element, last){
             var screenName = element.getAttribute("data-screen"),
             funcName = 'func'+i;
             if (!screenName) {
                 return false;
             }
-            /*showProf(element, {"bg":"https://pbs.twimg.com/profile_banners/214937525/1358302805/web","avatar":{"original":"https://pbs.twimg.com/profile_images/3093943816/b3987e896b44348c61ffdd7a63fbe16f.jpeg","bigger":"https://pbs.twimg.com/profile_images/3093943816/b3987e896b44348c61ffdd7a63fbe16f_bigger.jpeg","normal":"https://pbs.twimg.com/profile_images/3093943816/b3987e896b44348c61ffdd7a63fbe16f_normal.jpeg"},"name":"きじとら","comment":"Webづくりなどしてます。","location":"undefined","url":"http://kijtra.com","urlstr":"kijtra.com","screen":"kijtra","id":"214937525","link":"https://twitter.com/kijtra","tweetslink":"/kijtra","_tweets":"2,259","tweets":"2,259","followinglink":"/kijtra/following","_following":"30","following":"30","followerlink":"/kijtra/followers","_follower":"25","follower":"25"});
-            return false;*/
-            getData(screenName, funcName);
-            window[globalFunc][funcName] = function(res){
+
+            window[globalName][funcName] = function(res, disable){
                 if (res.query.results && res.query.results.json && res.query.results.json.html) {
-                    var data = parseData(res.query.results.json.html);
+                    var data = parseData(res.query.results.json.html),
+                    key;
                     showProf(element, data);
+
+                    if (!disable) {
+                        for(key in stack[screenName]) {
+                            window[globalName][key](res, true);
+                            delete stack[screenName][key];
+                        }
+                    }
                 } else {
                     element.style = 'display:none !important;';
                 }
             };
+            getData(screenName, funcName);
         });
 
         if (elements.length) {
@@ -236,8 +254,9 @@
                 for (; i < l; i++) {
                     current = elements[i];
                     path = current.src;
-                    if (path.indexOf(currentFile) != -1 || path.indexOf(currentFile.replace('.js', '.min.js')) != -1) {
-                        path = path.replace(/\.js$/, '.css');
+                    if (path.indexOf(globalName) != -1 && path.indexOf('/'+version+'.') != -1) {
+                        path = path.replace(/(\.min\.js|\.js)(\?.*)?$/, '.css$2');
+                        console.log(path);
                         css = d.createElement("link");
                         css.setAttribute("rel", "stylesheet");
                         css.setAttribute("href", path);
