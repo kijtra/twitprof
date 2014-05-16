@@ -84,17 +84,6 @@ handlers:
   upload: static/(.*\.(svg|svgz))
 
 
-
-- url: /
-  static_files: index.html
-  upload: index.html
-  expiration: "10m"
-
-- url: /index.html
-  static_files: index.html
-  upload: index.html
-  expiration: "10m"
-
 # index files
 - url: /(.+)/
   static_files: static/\1/index.html
@@ -104,6 +93,11 @@ handlers:
 - url: /(.+)
   static_files: static/\1/index.html
   upload: static/(.+)/index.html
+  expiration: "10m"
+
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
   expiration: "10m"
 
 # 404 error
